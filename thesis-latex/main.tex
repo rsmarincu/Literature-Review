@@ -1,0 +1,318 @@
+Nu\documentclass[11pt,twoside, a4paper]{report}
+\usepackage{baththesis}
+\usepackage{amssymb} 
+\usepackage[pdftex]{graphicx}
+\usepackage{url}
+\usepackage{textcomp}
+\usepackage{parskip}
+\usepackage[style=bath]{biblatex}
+\usepackage{epigraph}
+\usepackage[ruled,vlined]{algorithm2e}
+
+\addbibresource{ml.bib}
+\addbibresource{baththesis.bib}
+\addbibresource{microservices.bib}
+\addbibresource{lowcode.bib}
+\addbibresource{websites.bib}
+\addbibresource{api.bib}
+\addbibresource{bandits.bib}
+
+\usepackage{amsmath}
+
+
+
+\title{ \huge Towards democratising data science \\
+        \LARGE Fluxus, a low code data science platform } 
+\author{Robert Marincu}
+\degree{ Master of Science }
+\department{Department of Computer Sciences} \degreemonthyear{September 2020}
+\norestrictions
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+Data science is one of the most in demand fields at the moment. As data made headlines in recent years, people and companies are becoming more aware of the data they produce and how important it is. This paper builds on previous work on low code systems, data visualisation and automated machine learning and proposes a novel way of manipulating and processing data. The scope of this research project is to democratize data science by designing and developing
+an interactive web application that utilises visual scripting in order to produce workflows
+rather than programming. This takes form as a web application named Fluxus, aiming to democratize data science by introducing a low code system which produces workflows.\\
+\end{abstract}
+
+%%--------------------INTRODUCTION-----------------------
+\chapter{Introduction}
+
+\section{The Problem}
+It is argued that knowledge extraction from information is a key competitive advantage \cite{McKinsey}.  Moreover, data technology adoption is a necessity for survival. Forrester states that between 60\% and 70\% of data within a company is unused \cite{Gualtieri}. One of the reasons for this is that companies need specialised data science teams that have the required knowledge of how to make it valuable. In order to gain significant results and insights from data, advanced knowledge of statistics combined with domain expertise is essential \cite{ShangZeyuan2019DDSt}. In order to make data science accessible for anyone, we need to design new frameworks that fundamentally change the way we interact with data \cite{KraskaT.2018NAid}.
+This problem requires innovative, value-driven solutions where the technical side is joined by the business \cite{Cavanillas2016}.
+Now that everybody is becoming more aware of the power data can unleash, questions such as "Can my data help me achieve something I could not before?" \cite{Cao2017}. To answer this question, a strong set of foundations adapted from several fields including statistics, mathematics, social science and computer science is needed. A typical workflow that involves data looks like this:
+
+\begin{center}
+    {\it Data acquisition \textrightarrow \hspace{} Data processing \textrightarrow \hspace{} Modelling \textrightarrow \hspace{} Deployment \textrightarrow \hspace{} Monitoring }
+\end{center}
+
+A data scientist would have the aforementioned skills and apply them using tools such as Python, R, Tableau, SQL etc. Unfortunately there is a big gap in the demand for data scientists and the available talent. Even though the world is adopting data as fast as possible, it is being slowed down by the limited talent. It seems that this gap is caused by both the necessary skills in order to interact with data and by the way the interactions occurs. This poses the initial investigative question: 
+\begin{center}
+    {\it How can we gain knowledge from data when traditional data science skills are missing?}
+\end{center}
+
+
+\section{Solution}
+
+Breaking down the problem into its two main parts, we first look at how we can change the way we currently work with data, which is through computers. However, computers do not understand human language or numbers, they rely on binary code to read, write and process information. Writing binary code is very difficult, which is why we created assembly languages, which further got abstracted into low level languages and next into high level languages. Today, data scientists use these languages in order to manipulate and process data. This paper argues that a further level of abstraction, namely from high level languages to low code platforms, will allow a new group of users to interact with data. Some of the key aspects that need to be considered while designing such a system are:
+\begin{itemize}
+    \item \textbf{Interactivity.} Any action performed needs to have a response time that is lower than 1 second. Anything more than that will result in the user becoming impatient \parencite{nielseon}.
+    \item \textbf{Immersion.} While using the system, the user needs to stay focused on his task and not be distracted by other factors such as the user interface.
+    \item \textbf{Intuitive tools.} Each tool and element in the system should have an easily identifiable graphic icon accompanied by a suggestive name.
+\end{itemize}
+
+The above mentioned will manifest under the form of a canvas where the user can perform drag and drop actions on various tools and elements. By connecting them using virtual wires, the user can create workflows for specific tasks. For example, a small business owner could use his sale records and predict what item may sell in the upcoming months in order to prepare and stock that item. In bigger companies, data scientists can collaborate with business analysts to create compelling stories and visuals in order to persuade a client.
+
+Addressing the second part of the problem requires research into how automated machine learning can help with filling the missing skills of users. In an optimal scenario, users should be able to predict a desired label from their own dataset. Some of the existing solutions come from open source projects: Auto-Sklearn, Auto-WEKA, MLbox, Auto-Keras; and some come from big corporations: Google Cloud AutoML, Microsoft Azure AutoML, Amazon SageMake Autopilot. For this project, Auto-Sklearn and will be compared with a new proposed workflow, which will be detailed in section 3. 
+
+\noindent Taking into consideration the aforementioned, the question this paper answers becomes:
+
+\begin{center}
+    {\it "Can a low code data science platform allow a user to achieve similar results to a typical data science workflow? Moreover, can he do it with little knowledge of data science?"}
+\end{center}
+
+
+%%--------------------LITERATURE REVIEW-----------------------
+\chapter{Literature Review}
+This section presents a literature review of concepts and domains relevant to my research. It is an investigation into previous work that laid the foundation for this project, starting with the rise of low code systems, recent developments into the area of automated machine learning along with an overview of the microservices based architecture. The mathematical formulations and algorithms will be detailed in Chapter 3.
+
+\section{Low code systems}
+
+\setlength{\epigraphwidth}{0.5\textwidth}
+\epigraph{One of the most impactful innovations in IT is the democratization of the application development process.}{\textit{\cite{Points2020}}}
+ 
+
+A low-code platform consists of a set of tools that enables quick creation and delivery of applications \parencite{Waszkowski2019}. They come in various flavours: flow-based (visual programming) or block-based. Big companies such as Microsoft and Google integrated low-code platforms into their product-lines: Microsoft PowerApps and Google App Maker. These platforms address the needs of both professional and novice developers, especially as automation becomes more popular \cite{Points2020}. 
+As our focus is on data science, a flow-based is more appropriate, since it closely resembles a data-driven workflow language such as YAWL or Common Workflow Language. The concept has been around for a few decades and has origins in office automation \parencite{TerHofstede2010}. A workflow represents a set of interrelated computational and data-handling tasks working together to achieve a goal \parencite{Gesing2013}. It can be used to define and run computations or automate processes. Users can create workflows using a Workflow Management System. Typically a graphical user interface is provided, where users create graphs using drag and drop actions. The nodes of the graphs represent different tasks, while the edges represent the relationships between them. Moreover, various languages are used to capture these relationships, YAWL being the most common one \parencite{Gesing2013}. In the same fashion, visual programming languages consist of similar elements: nodes, node engines and connectors \parencite{Milicchio2016}. Nodes can represent actions such as file-reading or  mathematical operations, or they can represent data structures such as integers or strings. While nodes are the visual representations of these actions, node engines perform the actual tasks. Connectors usually take the work of wires that connect a node's output port to another's input port \parencite{Dimyadi2016}. 
+
+
+
+\section{Machine learning}
+
+\subsection{Auto-ML}
+Recent developments into data science and the rise of it's popularity created an increased demand for off-the-shelf machine learning solutions by non-experts. Modern open source packages such as WEKA, Scikit-Learn made great strides in supplying such solutions. However, novice users still face an important decision to make when using such packages: what model to use? Moreover, they are also given the freedom to customise the selected model by adjusting it's hyperparameters \cite{Kotthoff2017}. This challenge was first defined by \citeauthor{Kotthoff2017} as the \emph{combined algorithm selection and hyperparameter optimisation} problem, or \emph{CASH} for short. Auto-WEKA and Auto-Sklearn tackle the first part of this problem by using a Sequential Model-Based Algorithm Configuration (SMAC) \cite{Hutter2011} framework to find the optimal machine learning model.  However, Auto-Sklearn differentiates itself from Auto-WEKA by introducing \emph{meta-learning} for finding ML-frameworks that are likely to perform well based on past runs on similar datasets and it uses an ensemble of models \cite{Feurer2015}. 
+The domain of \emph{meta-learning} is a new and fascinating field that observes how different machine learning models perform on different tasks, and learning from these experiences with the purposes of providing a feedback loop with \emph{meta-data} \parencite{Vanschoren}. It can be argued that this behaviour resembles that one of a data scientist: inspecting the data, select an appropriate model for the task and then optimising it are all influenced by ones experience in the field of data science. Meta-learning aims to do this in a more systematic and data driven way. This is achieved by collecting \emph{meta-data} describing previously used models and datasets. It can comprise of algorithm configurations with hyperparameters, evaluations and the dataset's \emph{meta-features}. Most common \emph{meat-features} are: number of instances, number of features, number of classes, kurtosis, skewness, sparsity, data consistency etc. These features can be treated as a vector and similarity between datasets can be computed as a distance function between two vectors \parencite{Vanschoren}. 
+
+\subsection{Open-ML}
+
+\citetitle{openml} is a novel and collaborative data science platform that provides access to datasets, machine learning algorithms and results \parencite{VanRijn2013}. Using their API, researchers can share their datasets and experiments, making them easy to find and replicate. OpenML is based on a few key concepts \parencite{openml}:
+\begin{enumerate}
+    \item \textbf{Datasets.} \\
+    Datasets consist of a number of rows and are usually in tabular form. Users can upload (or reference it via an URL) and download data using the web platform or using the APIs. Most datasets have a targeted attribute and are defined by data characteristics such as number of features or kurtosis. Moreover, visualisations, statistics and tasks in which the dataset is used are also available.
+    \item \textbf{Tasks.} \\
+    A tasks describes what action should be performed with the data. OpenlML proposes eight task types: subgroup discovery, survival analysis, machine learning challenge, clustering, supervised data stream classification, learning curve, supervised regression and supervised classification. More concretely, a task is the instantiation of task types with specific inputs (datasets) and targets \parencite{Vanschoren2014}.
+    \item \textbf{Flows.} \\
+    A flow is an algorithm, script or workflow that solves a specific task. Flows can be uploaded via the API, website or referenced by URL using code hosting platforms. They are accompanied by information on hyperparameters and evaluations on tasks.
+    \item \textbf{Runs.} \\
+    A run is an application of a flow on a specific task. Users can submit runs via APIs and a run includes information on task id, flow id and parameteres settings. Moreover, details on results and visualisations are also available. 
+\end{enumerate}
+
+\subsection{Multi Armed Bandits}
+
+Multi-armed bandits is a framework for algorithms that make decisions over time under uncertainty. The term \emphi{multi-armed bandits} comes from imagining a gambler that faces a number of slot machines who needs to make a decision on what machine to play, how much he should play it and in which order he should play the machines \parencite{Slivkins2019}. Applications of this problem can be found as early as 1933 in medicine in \citetitle{ThompsonWilliamR.1933OtLt}. More recent application can be found in internet advertising, where websites try to optimize ad placement location \parencite{pandey2007a} and in automated machine learning , where the goal is to select the most efficient algorithm to solve a task \parencite{DasDores2018}. In a high-level representation of this problem, an algorithm $A$ has $K$ possible actions to choose from and $T$ rounds \parencite{Shang2019a}. Each round, algorithm $A$ chooses an action, also known as an $arm$ and collects a reward for it. Each arm has a fixed reward distribution which is hidden from the algorithm. In the gambler example, a slot may give 10 coins or none for a played round. In the gambler example, if the gambler decides to change the slot machine, he explores, and when he continues playing the same slot machine he exploits. Bandit problems involve sequential decision making with limited information, addressing the trade-off between exploration and exploitation \parencite{Bubeck2012}. Bandits problems can be modeled using with the dimensions presented below \parencite{Slivkins2019}:
+\begin{itemize}
+    \item \textbf{Feedback.} \\
+    After each round, the algorithm should be presented some feedback, which can be \emph{bandit feedback}, observing the reward returned by the chosen arm, \emph{full feedback} observing the reward of all arms that could have been chosen, and \emph{partial feedback} which is a mix of the previous two.
+    \item \textbf{Rewards.}
+    \begin{itemize}
+        \item \emph{Independent and identically Reward:} each reward distribution depends on the arm but not on the round $t$. Also known as IID reward. 
+        \item \emph{Adversarial rewards:} rewards can be arbitrary.
+        \item \emph{Constrained adversary:} rewards are chosen by a constrained adversary.
+        \item \emph{Stochastic rewards:} rewards evolves over time.
+    \end{itemize}
+    \item \textbf{Contexts.} \\
+    For each round $t$, the algorithm can observe the context before choosing an action. 
+    \item \textbf{Global constraints.} \\
+    The algorithm can be constrained on arms and rounds. In the gambler example, he might have a limited amount of resources to play.
+\end{itemize}
+A model with IID rewards is also called \emph{stochastic bandits} \parencite{Slivkins2019}. 
+\tab Given an algorithm $A$, a set of arms $k \in K$ and a time-budget $T$, in each round $t \in [T]$:
+\begin{algorithm}[hbt!]
+\SetAlgoLined
+Algorithm $A$ picks and arm $K_t \in K$ \; 
+Arm $k_t$ presents a reward $r_t \in [0,1]$ to the algorithm
+ \caption{MAB Problem}
+\end{algorithm} \\
+Where the arms distributions $D_t$ are unknown to $A$ and the goal is to maximize the total reward. For an arm $a$ we can calculate the mean reward vector $\mu(a)=\mathbb{E}[D_a]$ where $\mu \in [0, 1]$. Together with the time horizon $T$, it specifies the problem instance. To find out how an algorithm performs across different problem instances a new metric is needed. \cite{Slivkins2019} suggests comparing the algorithm's cumulative reward to the expected reward of always playing the optimal arm. This metric is called regret and is defined as follows:
+\begin{align*}
+    R(T) = \mu^* \cdot T - \sum_{t=1}^{T} \mu(a_t)
+\end{align*}
+Where $\mu^*$ is the best mean reward, $\mu^* := max_{a \in A}\mu(a)$ and $\mu^* \cdot T$ is the best arm benchmark.
+\cite{Bubeck2012} argues that the difficulty of the stochastic multi armed bandit problem is choosing the right exploration and exploitation balance. To tackle this problem a heuristic is suggests, namely the \emph{optimism in face of uncertainty}, assuming the algorithm has gathered data on the environment. We assume that each arm is currently as good as it can possibly be and then choose the best one. This is also known as \emph{upper confidence bound}: 
+\begin{algorithm}[hbt!]
+\SetAlgoLined
+Try each arm $k$ once \;
+In each round $t$, pick the max $UCB_t(a)$ where $a \in A$
+ \caption{UCB}
+\end{algorithm} \\
+Where $UCB_t(a) = \overline{\mu}(a) + r_t(a)$ and $\overline{\mu}(a)$ is the reward for each action $a$ after exploration phase \parencite{Slivkins2019}.
+The upper confidence bound algorithm selects an arm based on their potential of being optimal. When applied to algorithm selection, \citetitle{Schmidt2020} argues that the rewards should increase as more time is spent on an arm, the objective being to find the single best reward rather than maximizing the total reward. Multi arm bandits have been used in auto-ML, especially for algorithm selection, in works such as: Alpine Meadow \parencite{Shang2019a}, Auto-Band \parencite{DasDores2018}, Hyperband \parencite{Li2018} or HAMLET \parencite{Schmidt2020}. 
+ 
+\subsection{Hyperparameter optimisation}
+
+\section{Microservices}
+
+A monolith is “a large single upright block of stone, especially one shaped into or serving as a pillar or monument.” oxford dictionary
+
+One of goal of this project is to gather data science tools and wrap them in an uniform layer that is easy to access and understand. Essentially, to provide data science-as-a-service. Currently, data science tools come under the form of APIs or libraries for different programming languages such as Python: Pandas, Numpy, Matplotlib, Seaborn, Scikit-Learn etc. Using them, users can perform data processing, visualisations, predictions or classifications. However, they require local installation and know-how in order to make good use of them. This highly resembles a monolith software application, which have many limitations:
+\begin{itemize}
+    \item Difficulty to maintain due to complexity \parencite{Mazzara2017}.
+    \item They slow down continuous deployment and delivery \parencite{Sarita2018}.
+    \item Scalability is limited due to conflicting resource requirements for different modules \parencite{Sarita2018}.
+    \item Present a technology lock-in for developers, bounding the to use the same language and frameworks \parencite{Mazzara2017}.
+\end{itemize}
+To tackle these problems, a new architectural style has emerged in the recent years: \emph{microservices} \parencite{FowlerMicroservices}. A distributed application whose modules are microservices represents the microservice architecture. A microservice represents a cohesive, independent process interacts via messages \parencite{Mazzara2017}. Moreover, each microservice can be built on different software stacks and implement their own database schemas \parencite{Kinnary2018ADVU}. Although the use of an microservice oriented architectural style provides many advantages, here are the ones that relate the most to this project:
+\begin{itemize}
+    \item \textbf{Microservices and containers integrate seamlessly} \parencite{Mazzara2017}.
+    A container is a lightweight alternative to Virtual Machines \cite{Bernstein2014} that includes everything needed to run an application: code, runtime, system tools, system libraries and settings \parencite{whatisacontainer}. Hence, a container can be dedicated to a specific microservice, containing only the necessary tools and technology that enable that microservice. Moreover, containers are scriptable, which allows for automated deployment and delivery, as well as seamless scaling \parencite{Sarita2018}.
+    \item \textbf{Smart endpoints are favoured over pipes} \parencite{FowlerMicroservices}.
+    Easy communication can be achieved by using a language neutral application programming interface like REST \parencite{Jaramillo2016}. 
+    \item \textbf{Data management is decentralized} \parencite{FowlerMicroservices}.
+\end{itemize}
+\subsection{Containers}
+
+\section{Summary}
+
+The goal here is to encapsulate common data science tools as containerised microservices with a REST interface that can communicate with the client via a low code platform. The technologies and concepts described in this chapter represent a high-level overview of the project, and their implementation will be detailed into the subsequent chapter.
+
+%%--------------------PROPOSED APPROACH-----------------------
+\chapter{Proposed Approach}
+
+\section{Frontend}
+Web application \\
+
+\subsection{Interface}
+Web application \\
+Vue.js for single page app \\
+Rete.js main framework \\
+Heroku for deployment\\
+
+\subsection{Workflows}
+Json file representing the workflow \\
+Included templates \\
+Explain how to take the titanic challenge \\ workflow and compare it to fluxus \\
+
+\section{Backend}
+
+Fluxus is structured around a microservices based architecture, communicating via a Representational State Transfer (REST) API,  which allows easy access to resources directly from the client side. API endpoints represent a microservice and are identified by an URL. The user can interact with the API using the HTTP request methods \textit{GET} and \textit{POST}, and the API will return a JavaScript Object Notation (JSON) object. Moreover, each microservice is containerised and deployed on Microsoft Azure \parencite{azure}.
+
+\subsection{REST API}
+
+The backend is developed using the Python programming language due to it's simplicity and interoperability between web developement and data science. A survey done by \citetitle{Kaggle} shows that the most popular programming language among data scientists is Python \parencite{kumar_2020}. Moreover, the simple and lightweight Python web application framework \citetitle{flaskgithub} proves to be a great choice for this project due to it's modularity and REST oriented extension such as \citetitle{flaskrestfulgithub}.
+The API is designed following guidelines suggested by the OpenAPI documentation \cite{openapigithub}, which is developed by \cite{swagger}. The Swagger description language is the most popular standard when it comes to modelling and describing REST APIs \parencite{Haupt2017}. The overall structure of the API can be seen in table 1, all endpoints being located at the base URL \textbf{http://azure-domain/API/v1.0/}.
+\begin{table}[hbt!]
+\centering
+\begin{tabular}{lll}
+\hline
+\textbf{Action} & \textbf{Endpoint}      & \textbf{Object} \\ \hline
+POST            & /dataset               & Dataset         \\
+GET             & /prediction/           & Prediction      \\
+GET             & /visualisation/barplot & Image           \\ \hline
+\end{tabular}
+\caption {API Endpoints} \label{tab:title} 
+\end{table}
+
+
+\subsection{Deployment}
+Docker containers \\
+Docker compose \\
+Azure \\
+
+
+\subsection{Auto- ML}
+One of the key requirements proposed in the first chapter of this paper was \emphi{interactivity}, defined by fast response speed, in order to keep the user engaged. Although the solutions presented in the Auto-ML section of the first chapter produce accurate results, they often take long hours to compute. \citeauthor{Shang2019a} argue that the user should be able to see how the systems arrives to the result. In order to achieve this, we will try to emulate and automate a data science workflow.
+On a high-level, the workflow can be described as follows:
+\begin{enumerate}
+    \item Input a dataset.
+    \item Define a task.
+    \item Perform feature engineering.
+    \item Select an appropriate machine learning model.
+    \item Obtain initial results and inspect.
+    \item Perform optimisations.
+\end{enumerate}
+We split this workflow into three main parts: problem definition composed of (1) and (2), flow selection composed and (3) and (4), flow optimisation composed (5) and (6). 
+
+\subsection{Problem definition}
+
+Using the ``Upload dataset'' node, the user can upload the desired dataset $D$ that be a CSV or JSON file. After that, he can select a task type $t$ from the ``Task type'' node and the targeted label $l$ using the ``Target'' node. The ``Task type'' node displays a list of 8 available tasks types, corresponding to task types in OpenML. Next, the user can construct the task $t$ using the ``Task'' node, which has three inputs: dataset, task type and target. Now, the task $T$ is constructed as a tuple $(D, t, l)$. 
+We consider $t$ as a learning function $t:X \mapsto Y$. A flow $F$ maps a dataset $D=\{d_1, d_2, ... ,d_n\}$, where $d_i=(x_i, y_i) \in X \times Y$ is a training data point, to a function $t$ \parencite{Kotthoff2017}. Moreover, $F$ may have \emph{hyperparameters} $\lamda$ which define how $F_\lamda$ works.   
+
+\subsection{Model selection}
+
+Our aim here is to select the best possible flow for the input dataset, using default hyperparameters (
+if any). Using OpenML we have access to previous tasks together with their respective flows. This problem is defined as follows \parencite{Thornton2013}: given a set of flows $F_n$ and a dataset $D$, model selection determines the flow $F \in Fn$ with optimal performance. After splitting $D$ into training and testing sets $D_{train}$ and $D_{test}$, learning functions $t$ by applying $F$ to $D_{train}$ and evaluating the performance of these functions on $D_{test}$ we can estimate the performance. 
+\begin{align*}
+    F \in \operatorname*{argmin}_{F \in F_n} L(F, D_{train}, D_{test}) 
+\end{align*}
+Where $L(F, D_{train}, D_{test})$ is the loss achieved by $F$ when trained on $D_{train}$ and evaluated on $D_{test}$.
+
+With the problem defined, a high-level algorithm takes shape:
+\begin{enumerate}
+    \item Find similar datasets.
+    \item Find similar tasks that include said datasets.
+    \item Extract flows from tasks.
+    \item Compare flows and select most efficient one.
+\end{enumerate}
+
+To find similar datasets, we first need to extract meta-features from the input dataset. PyMFE, a Python library for meta-feature extraction developed by \cite{Rivolli2018} is used, since it produces similar meta-features to Open-ML. Currently, OpenML offers over 3000 analysed datasets. Assuming each dataset $D_i$ is described by a set of meta-features $m_i=(m_1^i, m_2^i, ..., m_n^i)$ we can compute a distance measure $d_p$ using the p-norm difference between datsets \cite{Feurer2019}:
+\begin{align*}
+    d_p(D_{input}, D_i) = ||m^{input} - m^i ||_p
+\end{align*}
+Using this metric, we can compile a list $D_n$ of most similar OpenML datasets and a list of flows $F_n$ used on the them. Some of these will become a \emphi{bandit arm} to be tested. To select these, we need a metric that reflects the similarity of datasets with respect to performance of flows. 
+\cite{Shang2019a} propose a distance function based on the performances over a fixed list of $n$ flows $(\theta_1, ... \theta_n)$, using the negative Spearman's correlation coeficient between the results on both datasets:
+\begin{align*}
+    d_c(D_{input}, D_i) = 1 - Corr(&[f^{D_{input}}(\theta_1), ... ,f^{D_{input}}(\theta_n)], \\
+                                   &[f^{D_{i}}(\theta_1), ... ,f^{D_{i}}(\theta_n)] )
+\end{align*}
+where $f^{D_{i}}(\theta_1)$ is the computed score after evaluating flow $\theta_1$ on $D_i$. However, this cannot be achieved yet, since we have not evaluated the list of flows $F_n$ on $D_input$ yet. A solution proposed by \cite{Feurer2015a} is to use learn a function that maps pairs of meta-features $(m_{input}, m_i)$ to $d_c(D_{input}, D_i)$. This can be done by computing $d_c(D_i, D_j)$ for all $1 \leq i,j \leg n$ datasets in $D_n$. Now, the metric can be approximated as:
+\begin{align*}
+    d_c(D_{input}, D_i) \approx R(m_{input}, m_i)
+\end{align*}
+Using the aforementioned distance metric $d_c$ we can get a list of flows for $D_{input}$ using a threshold $\tau$ such that $d_c(D_{input}, D_i) \approx R(m_{input}, m_i) \leq \tau$. 
+We can now begin to test the resulting flows against the input dataset. However, we need to take into consideration the following aspects: since computing resources are limited, we need to know when to stop evaluating a flow, and how can we return a flow as soon as possible. \cite{Shang2019a} suggests using a bandits based strategy which can detect bad performing flows. This can be done as follows:
+\begin{algorithm}[H]
+\SetAlgoLined
+\SetKw{Return}{yield}
+\SetKwInOut{Dataset $D$, Flow list $F_n$}{Flow}
+ \While{!$F_n.empty()$}{
+  $f$ $\leftarrow$ $F_n.pop()$ \;
+  Split $D$ into $D_{train}$ and $D_{test}$ \;
+  Split $D_{train}$ into $n$ equal sized $D_{train}^1,...,D_{train}^n$ \;
+  \ForEach{ $i \in 1...n$}{
+  Train $f$ on $D_{train}^{1..i}$ \;
+  $error_{test} \leftarrow$ Test $f$ on $D_{test}$ \;
+  \uIf{$error_{test} < error_{best}$}
+  {$error_{best} \leftarrow error_{test}$}
+  {}
+  $error_{train} \leftarrow$ Test $f$ on $D_{train}^{1...i}$
+  }
+  \uIf{$error_{train}$ > $error_{best}$}
+  {\Return{$-inf$}\;}
+  \uIf{$error_{test}$ $<$ $error_{current}$}
+  {\Return{$f$}}
+ }
+ \caption{Flow execution}
+\end{algorithm}
+Where $D_{train}^{1...i}$ is the union of the first $D_{train}^1 \cup D_{train}^2 D_{train}^1 ...,D_{train}^i $ splits.
+
+
+\section{Summary}
+
+%%--------------------TIMELINE-----------------------
+\chapter{Timeline}
+
+ 
+%%--------------------BIBLIOGRAPHY----------------------
+
+\printbibliography
+
+% \bibliographystyle{eg-alpha}
+% \bibliography{baththesis, ml}
+
+\end{document}
